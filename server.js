@@ -1,10 +1,12 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-app.use(express.text({ type: "*/*" }));
+
+// Получаем тело "как есть", без парсинга
+app.use(express.raw({ type: "*/*", limit: "5mb" }));
 
 // ЗАМЕНИ НА СВОЙ URL Google Apps Script
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDi8ML9lJ1UzSHIpwO8m993ytNaMf3Buu4HQQ5t_4Ez6-EiYc_HD0-qFcHuQ3bvgfY_w/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDi8ML9lJ1UzSHIpwO8m993ytNaMf3Buu4HQQ5t_4Ez6-EiYc_HD0-qFcHuQ3bvgfY_w/exec ';
 
 // Проверка URL от WeCom
 app.get('/', (req, res) => {
@@ -26,7 +28,7 @@ app.post('/', async (req, res) => {
     });
     res.send(result.data);
   } catch (error) {
-    console.error(error.message);
+    console.error('Proxy error:', error.message);
     res.status(500).send('Proxy error');
   }
 });
