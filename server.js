@@ -20,10 +20,13 @@ app.get('/', (req, res) => {
 app.post('/', async (req, res) => {
   try {
     const result = await axios.post(SCRIPT_URL, req.body, {
-      headers: { 'Content-Type': 'text/xml' }
+      headers: {
+        'Content-Type': req.headers['content-type'] || 'text/plain'
+      }
     });
     res.send(result.data);
   } catch (error) {
+    console.error(error.message);
     res.status(500).send('Proxy error');
   }
 });
