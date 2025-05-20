@@ -9,7 +9,11 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDi8ML9lJ1UzSHIpwO8
 // Проверка URL от WeCom
 app.get('/', (req, res) => {
   const echostr = req.query.echostr;
-  res.send(echostr || 'OK');
+  if (echostr) {
+    res.send(echostr);
+  } else {
+    res.status(400).send('Missing echostr');
+  }
 });
 
 // Прокси POST-запросов
